@@ -5,7 +5,9 @@ let mgsBar=document.querySelector(".mgs");
 let para=document.querySelector("#m");
 
 let turn0=true;
- 
+let counter=0; 
+let won = false;
+
 const winCombinations=[
     [0,1,2],
     [3,4,5],
@@ -20,6 +22,8 @@ const resetGame=()=>{
     turn0=true;
     boxesEnabled();
     mgsBar.classList.add("hide");
+    counter = 0;
+    won = false;
     
 }
 boxes.forEach((box)=>{
@@ -27,13 +31,16 @@ boxes.forEach((box)=>{
         
         if(turn0){
             box.innerText="O";
+            counter++;
             turn0=false;        
         }else{
             box.innerText="X";
             turn0=true;
+            counter++;
         }
         box.disabled=true;
         checkWinner();
+        draw();
     });
 });
 const boxesDisabled=()=>{
@@ -67,12 +74,21 @@ const checkWinner=()=>{
        
        if(pos1val!="" && pos2val!="" && pos3val!=""){
         if(pos1val===pos2val && pos2val===pos3val) {
-            
+            won = true;
             showWinner(pos1val);
         }
 
        }
     }
+    return true;
 };
+
+const draw = () => {
+    if(!(won) && counter == 9) {
+        m.innerText=`Game Draw Play A New Game`;
+        mgsBar.classList.remove("hide");
+    }
+}
+
 newBtn.addEventListener("click",resetGame);
 resetBtn.addEventListener("click",resetGame);
